@@ -34,9 +34,11 @@ pipeline {
   stage('Publish image to Docker Hub') {
           
             steps {
-        withDockerRegistry([ credentialsId: "dockerHub", url: "https://hub.docker.com/repository/docker/bane92ng/samplewebapp" ]) {
-          sh  'docker push bane92ng/samplewebapp:latest'
-        //  sh  'docker push bane92ng/samplewebapp:$BUILD_NUMBER' 
+		     withCredentials([string(credentialsId: 'docker_pud_pwd', variable: 'bane92ng')]) {
+          sh "docker login -u bane92ng -p ${bane92ng}"
+		  }
+          sh "docker push bane92ng/samplewebapp:${BUILD_NUMBER} "
+        
         }
                   
           }

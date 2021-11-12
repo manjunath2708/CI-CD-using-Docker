@@ -21,7 +21,7 @@ pipeline {
         }
         
 
-  stage('Docker Build and Tag') {
+  stage('Docker Build and Tag'){
            steps {
               
                 sh 'docker build -t samplewebapp:latest .' 
@@ -31,7 +31,7 @@ pipeline {
           }
         }
      
-  stage('Publish image to Docker Hub') {
+  stage('Publish image to Docker Hub'){
           
             steps {
 		     withCredentials([string(credentialsId: 'docker_pud_pwd', variable: 'bane92ng')]) {
@@ -39,15 +39,14 @@ pipeline {
 		  }
           sh "docker push bane92ng/samplewebapp:${BUILD_NUMBER} "
         
-        }
-                  
           }
-        }
+    }          
+        
+       
      
       stage('Run Docker container on Jenkins Agent') {
              
-            steps 
-			{
+            steps {
                 sh "docker run -d -p 8003:8080 bane92ng/samplewebapp"
  
             }
